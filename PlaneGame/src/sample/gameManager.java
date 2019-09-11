@@ -2,81 +2,81 @@ package sample;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Random;
+import static sample.Display.frame;
 
 public class gameManager implements KeyListener {
     private Player player;
     public static ArrayList<Bullet> bullet;
     private ArrayList<Enemy> enemies;
-    private long current;
-    private long delay;
+    private long current,delay;
     private int health;
     private int score;
     private boolean start;
 
     public void init(){
-        Display.frame.addKeyListener(this);
-        player = new Player((gameSetUp.gameWidth / 2) + 35 ,gameSetUp.gameHeight);
+        frame.addKeyListener(this);
+        player = new Player((gameSetUp.gameWidth / 2) - 25,gameSetUp.gameHeight - 50);
         player.init();
-        bullet = new ArrayList<Bullet>();
-        enemies = new ArrayList<Enemy>();
+        bullet = new ArrayList<>();
+        enemies = new ArrayList<>();
         current = System.nanoTime();
         delay = 200;
         health = player.getHealth();
         score = 0;
-
-
     }
+
     public void tick(){
-       if (start) {
-           player.tick();
-           for (int i = 0; i < bullet.size(); i++) {
-               bullet.get(i).tick();
-           }
-           long breaks = System.nanoTime() - current / 1000000;
-           if (breaks > delay) {
-               for (int i = 0; i < 2; i++) {
-                   Random rand = new Random();
-                   int randX = rand.nextInt(700);
-                   int randY = rand.nextInt(700);
-                   if (health > 0) {
-                       enemies.add(new Enemy(randX, -randY));
-                   }
-               }
-               current = System.nanoTime();
-           }
-           //enemies
-           for (int i = 0; i < enemies.size(); i++) {
-               enemies.get(i).tick();
-           }
-       }
-
+        if (start) {
+            player.tick();
+            int bound = bullet.size();
+            for (int i1 = 0; i1 < bound; i1++) {
+                bullet.get(i1).tick();
+            }
+            long breaks = System.nanoTime() - current / 1000000;
+            if (breaks > delay) {
+                for (int i = 0; i < 1; i++) {
+                    Random rand = new Random();
+                    int randX = rand.nextInt(700);
+                    int randY = rand.nextInt(700);
+                    if (health > 0) {
+                        enemies.add(new Enemy(randX, -randY));
+                    }
+                }
+                current = System.nanoTime();
+            }
+            //enemies
+            int bound1 = enemies.size();
+            for (int i = 0; i < bound1; i++) {
+                enemies.get(i).tick();
+            }
+        }
     }
+
     public void render(Graphics g) {
         if (start) {
             //player
             player.render(g);
-            for (int i = 0; i < bullet.size(); i++) {
-                bullet.get(i).render(g);
+            int bound = bullet.size();
+            for (int i1 = 0; i1 < bound; i1++) {
+                bullet.get(i1).render(g);
             }
-            for (int i = 0; i < bullet.size(); i++) {
+            for (int i = 0; i < bullet.size(); i++)
                 if (bullet.get(i).getY() <= 50) {
                     bullet.remove(i);
                     i--;
                 }
-            }
             //enemies
-            for (int i = 0; i < enemies.size(); i++) {
-                if (!(enemies.get(i).getX() <= 50 || enemies.get(i).getX() >= 450 - 45
-                        || enemies.get(i).getY() >= 450 - 45)) {
-                    if (enemies.get(i).getY() >= 50) {
-                        enemies.get(i).render(g);
-
+            int bound1 = enemies.size();
+            for (int i1 = 0; i1 < bound1; i1++) {
+                if (!(enemies.get(i1).getX() <= 0
+                        || enemies.get(i1).getX() >= 555
+                        || enemies.get(i1).getY() >= 565)) {
+                    if (enemies.get(i1).getY() >= 0) {
+                        enemies.get(i1).render(g);
                     }
-
                 }
             }
             for (int i = 0; i < enemies.size(); i++) {
@@ -113,19 +113,20 @@ public class gameManager implements KeyListener {
 
                 }
                 g.setColor(Color.black);
-                g.setFont(new Font("arial", Font.BOLD, 40));
-                g.drawString("Score : " + score, 70, 500);
-                g.drawString("Health : " + health, 70, 540);
-
-
+                g.setFont(new Font("arial", Font.BOLD, 25));
+                g.drawString("Score : " + score, 30, 645);
+                g.drawString("Health : " + health, 30, 675);
             }
         }else {
             g.setColor(Color.black);
             g.setFont(new Font("arial",Font.PLAIN,33));
-            g.drawString("Press enter",165,gameSetUp.gameHeight/2+50);
+            g.drawString("Press enter",215,gameSetUp.gameHeight/2);
+            g.setFont(new Font("arial",Font.PLAIN,20));
+            g.drawString("Left:      ←",240,gameSetUp.gameHeight/2+100);
+            g.drawString("Right:    →",240,gameSetUp.gameHeight/2+125);
+            g.drawString("Fire:  Space",240,gameSetUp.gameHeight/2+150);
         }
     }
-
 
     public void keyPressed(KeyEvent e) {
         int source = e.getKeyCode();

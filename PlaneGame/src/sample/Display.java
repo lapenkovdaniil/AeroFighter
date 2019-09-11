@@ -5,8 +5,7 @@ import java.awt.*;
 
 public class Display {
     private String title;
-    private int width;
-    private int heigth;
+    private int width,heigth;
     public static JFrame frame;
     private Canvas canvas;
 
@@ -25,13 +24,12 @@ public class Display {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         canvas = new Canvas();
         canvas.setPreferredSize(new Dimension(width,heigth));
-        canvas.setBackground(new Color(212,154,140));
+        canvas.setBackground(new Color(255,255,255));
         canvas.setFocusable(false);
         frame.add(canvas);
         frame.pack();
-
-
     }
+
     public Canvas getCanvas(){
         return canvas;
     }

@@ -5,10 +5,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class loadImage {
-    public static BufferedImage image;
-    public static BufferedImage player,enemy;
+    public static BufferedImage image,player,enemy;
     public static void init(){
-       image =  imageLoader("/res/cosmos.png");
+        image =  imageLoader("/res/cosmos.png");
         player = imageLoader("/res/spacep.png");
         enemy = imageLoader("/res/ufo.png");
     }
@@ -22,7 +21,4 @@ public class loadImage {
         }
         return null;
     }
-
-
-
 }

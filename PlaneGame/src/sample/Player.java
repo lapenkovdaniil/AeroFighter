@@ -3,60 +3,55 @@ package sample;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.security.Key;
+
+import static java.lang.System.*;
 
 public class Player implements KeyListener {
-    private int x;
-    private int y;
+    private int x,y;
     private boolean left,right;
     private boolean fire;
-    private long current;
-    private long delay;
+    private long current,delay;
     private int health;
-
     public  Player(int x,int y){
         this.x = x;
         this.y = y;
-
     }
+
     public void init(){
         Display.frame.addKeyListener(this);
-        current = System.nanoTime();
+        current = nanoTime();
         delay = 100;
         health = 3;
     }
 
     public void tick(){
-       if (!(health <= 0)) {
-           if (left) {
-               if (x >= 55) {
-                   x -= 4;
-               }
-
-           }
-           if (right) {
-               if (x <= 395) {
-                   x += 4;
-               }
-           }
-           if (fire) {
-               long breaks = System.nanoTime() - current / 100000000;
-               if (breaks > delay) {
-
-                   gameManager.bullet.add(new Bullet(x + 22, y));
-               }
-               current = System.nanoTime();
-           }
-       }
-
+        if (!(health <= 0)) {
+            if (left) {
+                if (x >= 2) {
+                    x -= 5;
+                }
+            }
+            if (right) {
+                if (x <= 547) {
+                    x += 5;
+                }
+            }
+            if (fire) {
+                long breaks = nanoTime() - (current / 100000000);
+                if (breaks > delay) {
+                    gameManager.bullet.add(new Bullet(x + 23, y));
+                }
+                current = nanoTime();
+            }
+        }
     }
 
     public void render(Graphics g){
         if (!(health <= 0)) {
-
             g.drawImage(loadImage.player, x, y, 50, 50,null);
         }
     }
+
     public void keyPressed(KeyEvent e){
         int source = e.getKeyCode();
         if (source == KeyEvent.VK_LEFT){
@@ -80,7 +75,6 @@ public class Player implements KeyListener {
         if (source ==KeyEvent.VK_SPACE){
             fire = false;
         }
-
     }
     public void keyTyped(KeyEvent e){
 
